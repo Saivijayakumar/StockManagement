@@ -1,0 +1,19 @@
+﻿{
+  "StocksList": [
+    {
+      "Name": "airtel",
+      "Volume": 10,
+      "price": 21
+    },
+    {
+      "Name": "Idea",
+      "volume": 22,
+      "price": 12
+    },
+    {
+      "Name": "TVS",
+      "volume": 10,
+      "price": 100
+    }
+  ]
+}
