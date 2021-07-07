@@ -1,19 +1,26 @@
-﻿{
+{
   "StocksList": [
     {
-      "Name": "airtel",
-      "Volume": 10,
+      "name": "airtel",
+      "volume": 10,
       "price": 21
     },
     {
-      "Name": "Idea",
+      "name": "Idea",
       "volume": 22,
       "price": 12
     },
     {
-      "Name": "TVS",
+      "name": "TVS",
       "volume": 10,
       "price": 100
+    }
+  ],
+  "UserList": [
+    {
+      "name": "Tata",
+      "volume": 2,
+      "price" : 100
     }
   ]
 }
