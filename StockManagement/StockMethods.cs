@@ -10,7 +10,6 @@ namespace StockManagement
     {
         public void ShowDetails (List<StockDetails.Stockc> stocksList)
         {
-            Console.WriteLine("The stock Details are\n");
             foreach (StockDetails.Stockc i in stocksList)
             {
                 Console.WriteLine($"Company Name :{i.name}");
@@ -80,20 +79,18 @@ namespace StockManagement
             string name = Console.ReadLine();
             Console.WriteLine("Enter how many volumes you want to buy:");
             int volume = Convert.ToInt32(Console.ReadLine());
-            bool check = CheckAvailablity(name, volume, buyStockList.StocksList);
-            if (check)
+            StockDetails.Stockc result = buyStockList.StocksList.Find(item => item.name.Equals(name));
+            if (result.name.Equals(name) && result.volume >= volume)
             {
-
-                StockDetails.Stockc result = buyStockList.StocksList.Find(item => item.name.Equals(name));
                 result.volume -= volume;
                 Console.WriteLine(result.volume);
                 StockDetails.UserStock user = new StockDetails.UserStock();
                 user.name = name;
                 user.volume = volume;
                 user.price = result.price;
-                if (buyStockList.UserList.Find(item => item.name.Equals(user.name))))
+                StockDetails.UserStock res = buyStockList.UserList.Find(item => item.name.Equals(user.name));
+                if (res != null)
                 {
-                    //StocksUtility.UserStocks res = utilityOfStockList.userStockList.Find(item => item.name.Equals(user.name));
                     foreach (StockDetails.UserStock i in buyStockList.UserList)
                     {
                         if (i.name.Equals(name) && i.volume >= volume)
@@ -106,14 +103,11 @@ namespace StockManagement
                 }
                 else
                 {
-                    
+                    buyStockList.UserList.Add(user);
                 }
-
                 File.WriteAllText(patthref, JsonConvert.SerializeObject(buyStockList));
                 Console.WriteLine("********Purchased success*************");
                 Console.WriteLine($"You Purchased {user.name} of volume = {user.volume} , worth = {user.volume * user.price} ");
-
-
             }
             else
             {
@@ -121,16 +115,47 @@ namespace StockManagement
             }
 
         }
-        public bool CheckAvailablity(string nameOfStock, int volumeOfStock, List<StockDetails.Stockc> stockList)
+        public void SellStocks(string pathref)
         {
-            StockDetails.Stockc result = stockList.Find(item => item.name.Equals(nameOfStock));
-            if (result.name.Equals(nameOfStock) && result.volume >= volumeOfStock)
+            StockDetails sellStock = JsonConvert.DeserializeObject<StockDetails>(File.ReadAllText(pathref));
+            UsersStocks(sellStock.UserList);
+            Console.WriteLine("Enter the name of the stock you want to sell:");
+            string nameOfStock = Console.ReadLine();
+            Console.WriteLine("Enter how many volumes you want to sell:");
+            int volumeOfStock = Convert.ToInt32(Console.ReadLine());
+            StockDetails.UserStock result =sellStock.UserList.Find(item => item.name.Equals(nameOfStock));
+            if(result.name.Equals(nameOfStock) && result.volume >= volumeOfStock)
             {
-                return true;
+                result.volume -= volumeOfStock;
+                Console.WriteLine(result.volume);
+                StockDetails.Stockc user = new StockDetails.Stockc();
+                user.name = nameOfStock;
+                user.volume = volumeOfStock;
+                user.price = result.price;
+                StockDetails.Stockc res = sellStock.StocksList.Find(item => item.name.Equals(nameOfStock));
+                if(res != null)
+                {
+                    foreach (StockDetails.Stockc i in sellStock.StocksList)
+                    {
+                        if (i.name.Equals(nameOfStock))
+                        {
+                            i.volume += user.volume;
+
+                        }
+                    }
+                }
+                else
+                {
+                    sellStock.StocksList.Add(user);
+                }
+                File.WriteAllText(pathref, JsonConvert.SerializeObject(sellStock));
+                Console.WriteLine("*********Sold success*************");
+                Console.WriteLine($"You Sold {user.name} of volume = {user.volume} , worth = {user.volume * user.price} ");
+
             }
             else
             {
-                return false;
+                Console.WriteLine($"You don't have {result.name} stocks ");
             }
         }
 
