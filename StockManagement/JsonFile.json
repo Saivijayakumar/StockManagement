@@ -7,20 +7,30 @@
     },
     {
       "name": "Idea",
-      "volume": 22,
+      "volume": 19,
       "price": 12
     },
     {
       "name": "TVS",
-      "volume": 10,
+      "volume": 9,
+      "price": 100
+    },
+    {
+      "name": "Tata",
+      "volume": 2,
       "price": 100
     }
   ],
   "UserList": [
     {
       "name": "Tata",
-      "volume": 2,
-      "price" : 100
+      "volume": 20,
+      "price": 100
+    },
+    {
+      "name": "Idea",
+      "volume": 1,
+      "price": 12
     }
   ]
 }
